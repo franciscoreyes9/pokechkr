@@ -1,0 +1,11 @@
+.teamBuilder {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.teamSlots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}

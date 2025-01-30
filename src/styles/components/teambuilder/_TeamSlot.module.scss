@@ -1,0 +1,30 @@
+.slot {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  min-height: 120px;
+  padding: 1rem;
+  transition: border-color 0.2s;
+
+  &.hovered {
+    border-color: #3b4cca;
+  }
+}
+
+.pokemon {
+  cursor: move;
+  text-align: center;
+  img {
+    width: 80px;
+    height: 80px;
+  }
+  span {
+    display: block;
+    text-transform: capitalize;
+  }
+}
+
+.empty {
+  color: #666;
+  text-align: center;
+  padding: 1rem;
+}

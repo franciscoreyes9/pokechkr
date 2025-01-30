@@ -1,9 +1,18 @@
-export const fetchPokemonList = async (limit = 20, offset = 0) => {
+export const fetchPokemonList = async (pageParam = 0, limit = 40) => {
     const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${pageParam}`
     );
     if (!response.ok) throw new Error("Failed to fetch Pokémon list");
-    return response.json();
+    const data = await response.json();
+
+    const detailedPokemon = await Promise.all(
+        data.results.map(pokemon => fetchPokemonDetails(pokemon.url))
+    );
+
+    return {
+        results: detailedPokemon,
+        nextOffset: data.next ? pageParam + limit : null,
+    };
 };
 
 export const fetchPokemonDetails = async (url) => {

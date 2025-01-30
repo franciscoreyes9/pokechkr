@@ -2,8 +2,18 @@ import React from "react";
 import styles from "../../styles/components/pokedex/_PokemonCard.module.scss";
 
 const PokemonCard = ({ pokemon }) => {
-    const { name, sprites, types } = pokemon;
-    const image = sprites.front_default;
+
+    if (!pokemon || !pokemon.sprites) {
+        return null; // or return a placeholder component
+    }
+
+    const {
+        name = "Unknown Pokémon",
+        sprites = {},
+        types = []
+    } = pokemon;
+
+    const image = sprites.front_default || "https://via.placeholder.com/100";
 
     return (
         <div className={styles.card}>
@@ -12,7 +22,7 @@ const PokemonCard = ({ pokemon }) => {
             <div className={styles.types}>
                 {types.map((type) => (
                     <span key={type.slot} className={styles.type}>
-            {type.type.name}
+            {type.type?.name || "Unknown"}
           </span>
                 ))}
             </div>

@@ -18,7 +18,7 @@ const Auth = () => {
             } else {
                 await createUserWithEmailAndPassword(auth, email, password);
             }
-            navigate("/"); // redirect to home after login/signup
+            navigate("/teambuilder"); // redirect to teambuilder after login/signup
         } catch (error) {
             alert(error.message);
         }

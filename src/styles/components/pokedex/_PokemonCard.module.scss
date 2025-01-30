@@ -1,23 +1,32 @@
 .card {
   background: white;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: Inter, sans-serif;
 
   &:hover {
-    transform: translateY(-4px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
   }
 }
 
 .image {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
 }
 
 .name {
   text-transform: capitalize;
+  font-size: 0.8rem;
   margin: 0.5rem 0;
 }
 
@@ -28,9 +37,9 @@
 }
 
 .type {
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.65rem;
   background: #f5f5f5;
-  border-radius: 4px;
-  font-size: 0.875rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
   text-transform: capitalize;
 }

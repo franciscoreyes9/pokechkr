@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchPokemonList, fetchPokemonDetails } from "../../utils/api/pokeapi";
 import PokemonCard from "./PokemonCard";
 import styles from "../../styles/components/pokedex/_PokedexGrid.module.scss";
 
 const PokedexGrid = () => {
-    const [pokemonList, setPokemonList] = useState([]);
-
-    // fetch pokemon list
-    const { data, isLoading, error } = useQuery({
+    const {
+        data,
+        isLoading,
+        error,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
         queryKey: ["pokemonList"],
-        queryFn: () => fetchPokemonList(20, 0),
+        queryFn: ({ pageParam = 0 }) => fetchPokemonList(pageParam, 40),
+        getNextPageParam: (lastPage) => lastPage.nextOffset,
     });
 
-    // fetch details for each pokemon
-    useEffect(() => {
-        if (data?.results) {
-            const fetchDetails = async () => {
-                const details = await Promise.all(
-                    data.results.map((pokemon) => fetchPokemonDetails(pokemon.url))
-                );
-                setPokemonList(details);
-            };
-            fetchDetails();
-        }
-    }, [data]);
-
-    if (isLoading) return <div className={styles.loading}>Loading...</div>;
-    if (error) return <div className={styles.error}>Error: {error.message}</div>;
+    const allPokemon = data?.pages.flatMap((page) => page.results) || [];
 
     return (
-        <div className={styles.grid}>
-            {pokemonList.map((pokemon) => (
-                <PokemonCard key={pokemon.id} pokemon={pokemon} />
-            ))}
+        <div>
+            <div className={styles.grid}>
+                {allPokemon.map((pokemon) => (
+                    <PokemonCard
+                        key={pokemon.id}
+                        pokemon={pokemon}
+                    />
+                ))}
+            </div>
+
+            {hasNextPage && (
+                <button
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                    className={styles.loadMore}
+                >
+                    {isFetchingNextPage ? "Loading..." : "Load More"}
+                </button>
+            )}
         </div>
     );
 };
